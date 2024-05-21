@@ -1,0 +1,153 @@
+---
+title: "The Research Space, Knowledge Characteristics, and the Role of Academic Collaboration In Central and Eastern Europe: A Research Proposal"
+author: "Bennour Mohamed Hsin-HGXGPE"
+
+output:
+  pdf_document:
+    latex_engine: xelatex
+bibliography: references.bib
+csl: cambridge-journal-of-economics.csl
+---
+
+
+
+## Motivation and Objectives 
+
+Economic development theories has been a loud voice in the calls for industrialisation (or re-industrialisation in some cases) where the main idea posits that countries are required to invest in developing their capacities to produce goods and services in order to promote growth, although from a developmental perspective this also include-in later studies-the manner in which such effort must be conducted. The Rosestein-Rodan [@rosenstein1943problems] framework posits that the social return value of investments in this context can be larger than the individual returns when related activities are present (multiplier effect). Similarly Hirschman's [@hirschman1977generalized] framework on the other hand emphasises on the linkages between industries, their complementarity and the general spillover process between and across them. Additionally, the Perish-Singer hypotheisis targets countries specialising in exporting commodities positing that these countries need to industrialise to develop in the long-run. These corner stones of development theories have a common point: the emphasis on the relatedness between sectors and industries and industrialisation as a main factor of development (in contrast with liberalisation optics that don't give an important weight to industrialisation, rather leveraging a nation's comparative advantages is considered the path for development). 
+
+However, these theoretical frameworks target the general outlook of an economy, it's easy to observe the need for industrialisation, but it's not as easy to disect how that industrialisation should be executed and implemented policy wise. This is especially important as the industrialisation efforts not only require capital investment but also are constraint with the level of knowledge in its geography. From this optic, the paradigm of Economic Complexity (hereforth refered to as EC), established by the founding work of [@hidalgo2007], proposes an interesting framework to capture this knowledge, leveraging network analysis theories. This paradigm posits that conventional economic indicators that are aggregated measures fail to capture complex interaction in an economy given the high dimensionality that chracterises these interaction [@hidalgo2021]. Thus networks are considered the proper tool in this context as they capture all kinds of interactions without a loss of information. 
+
+The EC paradigm, also aknowledge the importance of knowledge in development, indeed the Economic Complexity Index (hereforth as ECI), orginaly developed for measuring the complexity of nations' exports and the export categories, is one of these tools that aim at capturing the tacit knowledge that describes the capacities to produces and diversify. This has been done in many studies that target trade data[@hidalgo2007], patent data [@balland2019_smart], and publication data [@Abramo2017; @guevara2016_theresearchspace]. 
+
+The literature confirms the importance of the existing knowledge level for industrialisation efforts as I pinpointed in the previous paragraphs, thus studying how this knowledge is created and diffused across countries and sectors is at the heart of development theory. In this context various studies (although limited as a fraction compared to other areas) have targeted research production (i.e academic publication). The idea stems from the concensus that academia is the initial catalist of knowledge in its geography, which justifies studying the patterns of related knowledge within these geographies and the their level of sophistication. In this context the general objective of this study is two folds: First, is to aim at unraveling the interplay between related knowledge in  terms of scientific publications. Second, is to understand how collaboration patterns between research institution interacts with the level of the related knowledge and its level of sophistication. These objectives are guided by two main frameworks of references, first Hidalgo's 4Ws [@hidalgo2023] that constitute a comprehensive framework for policy implications regarding the EC paradigm. And second Balland's smart specialisation (SS) framework [@balland2019_smart]that target the regional aspect of the paradigm. 
+
+## Research Questions
+
+For a more nuanced context of the objective of this study, and following highlights in the previous sections, I derived two main research questions which constitute the main angle of this study:
+
+- **RQ1**: What are the characteristics of related knowledge and its sophistication level in Central Europe's academic fabric?
+
+- **RQ2**: How academic collaboration influence these characteristics?
+
+In order to contextualise these questions further, I used the CIMO framework to disect them into more intelligable details:
+
+
+
+**Context (C)**: Central Europe nations, regions, and organizations, a multi-level geographical aspect.
+
+**Intervention (I)** (see core metrics for more details): 
+
+  1. Characteristics of knowledge  (R1).
+  2. Relationship between collaboration and theses characteristics (R2).
+
+**Mechanism (M)**: 
+
+- I explore the characteristics using the publication data.
+- Relate academic institutions with their geography and research space to quatify their characteristics.
+- Relate these institutions (and regions) to each other given the research space
+
+
+**Outcome (O)**: 
+
+The expected outcome is a framework that can allow to identify the academic strengths and weaknesses on a multilevel (institutions and regions) through the studied characteristics, identify the areas of improvements and how they can achieved given the collaboration patterns. (a further extension can be conducted to unravel optimal specialisation/diversification/collaboration policies following [@alshamsi2018_optimal]) 
+
+
+## Preliminary Structure
+
+I expect this study to be conducted in the following stucture:
+
+
+1. **Introduction**
+  - Introduction to problem of quantifying knowledge.
+  - The EC paradigm as a theoretical framework of the study.
+  - Overview of the Research Questions and Their Significance
+  - Objectives of the Study
+
+2. **Theoretical background and literature review**
+  - The EC paradigm, its significance and tools.
+  - A review of literature on the role of knowledge
+  - Identifying Gaps in Existing Research
+
+3. **Methodology**
+  - Research design: Methodologies to target the research questions.
+  - Data sources, characteristics, and the criterias.
+  - Analytical Framework: Metrics and Methods 
+   
+4. **Exploring the Charateristics of knowledge**
+  - Overview of the research space in this context.
+  - Analysis of the characterstics of the research space
+  - Comparative analysis (Institution, Regions or Countries)
+
+
+5. **Analysis of academic Collaboration Dynamics**
+  - Patterns and trends in academic collaboration within Central Europe
+  - Relationship between collaboration and knowledge characteristics.
+
+6. **Interaction between academic collaboration and knowledge characteristics**
+   - Detailed examination of RQ1
+   - In-depth analysis of RQ2
+   - Synthesis of findings
+
+7. **Discussion**
+
+8. **Conclusions and Future Directions**
+ 
+
+## Preliminary Literature Review
+
+
+For this study, I will focus mainly on two streams of literature, scientometrics literature envolving the structure of academia in terms of publication and collaboration patterns, then I take this a bit further with the second stream of literature in geography of innovation and economic complexity. Albeit my main focus would be the studies where these two streams of literature intersect. In this context I identified a collection of papers that constitute the seeds of this proposed study, namely: [@Abramo2017; @guevara2016_theresearchspace; @wuestman_geography_2019] as well as [@hidalgo2023; @alshamsi2018_optimal;  @balland2019_smart]. 
+
+First, [@Abramo2017] investigate the trends of diversifying and specialising in specific research areas for individual scientists in Italy between 2004 and 2008. In this study the authors use three main metrics extent of diversification (ED: measures directly the number of subjects in a given scientific portfolio),  diversification ratio (DR: measures the fraction of publications in other fields than the dominant one), and relatedness ratio (RR: the ratio of publications in the dominant subject compared to the total). This study found that the level of diversification is different for each of the subject under the scope of the study mirroring the differnece in practice for these scientific areas. This study opens the door for further investigation especially in order to evaluate how institutions behave in this regard and whether the individual behavior observed in such a study is similar in this context or not. Second, [@wuestman_geography_2019] investigates the role of geography in academic citations using a dataset of 5.5 million studies. The study focused on multidisciplinary research areas and found that the wherahs the geographic proximity seems to play a role in some fields, and that knowledge relatedness is actually the main driver of the process of investigation. This study is of a special interest as it uses some of the tools in the EC paradigm. The bibliometric tools used in this study are also of interest since they can be of great value for this proposed work, albeit for now developing a coherent framework is more urgent and valuable. Another pivotal study is the work of [@guevara2016_theresearchspace], in this study the authors basically adopted and adapated the EC paradigm to scientometric analysis following seminar paper of [@hidalgo2009; @hidalgo2007]. The main take from this study is that we can view the different research area as a single space analogous to the product space in [@hidalgo2007], thus by constructing a network of related research areas (based on the frequency co-citations of papers in differnet areas), adapting the tool of EC is straight forward, the study focused on career paths of authors (i.e areas of expertese) and concluded that career trajectories (or specialisation/diversification patterns) seem to be a relatively accurate predictor of future research output. 
+
+Perhaps the most important paper in this list of seed studies is [@hidalgo2023]. In this study, Hidalgo contextualise the EC paradigm within the economic development theories, and posits that tools and metrics popularised by EC are in some cases misinterpreted when it comes to policy implications. Hidalgo proposed a 4Ws(What, when, where, and who!) framework that target all dimensions of the problems that EC aim to solve. Eventually the idea is that as we investigate a network (product space, scientific space, etc.) we need to keep in mind that the effect captured by this network are dynamic, in the sence that it changes from one area to the other (where), that it can have different effects over time given what is being measured (when). Additionally (what) is being measured is equally as important and effect the observation in terms of when, and where, wheras the (who) question focuses on the agents of change (migration flows, demographic groups, etc). In this proposed study I aim to incorporate this framework to investigate all the aspects I previously presented in the research question. Building on this,  [@alshamsi2018_optimal] is one of the studies that constitute a corner stone in implimenting Hidalgo's 4Ws. This study proposed a methodology that allows to capture the dynamism of related enteries (entering a new field of expertese that is related to other fields that the entity of interest is already active in), and find the optimal solution that allows an entity to specialise in a specific related area in the least amout of time. This work allow researchers to uncover optimal diversification strategies that are beyond the naivity of targeting the most related areas of expertese. This work is complementary to all the studies mentioned in this section and present and elegant formulation of the (When) dimension, and can be extended further to investigate additional factors of diversification strategies other than time. Finally, the smart specialisation framework in [@balland2019_smart] presents the final piece of this list of literature as it provides an examplary framework of the diversification/specialisation efforts in terms of technological capacities in European regions using a set od patent data. Although the data I intend to use in this work is not patent related, but the regional framework proposed in this study aligns with the (Where) dimension. 
+
+
+
+### Data and Methodology
+
+Since the context of this proposed study is multilevel (institutions, regions, countries), the proper data needed should be aggregable on multilevel as well. Thus in order to construct the research space I need data on the affiliation level at least. I intend to use multiple databases in this context mainly Scopus and Web of Science given the similar structure in both these bases. Although the classification of the subject areas can be different between both which might cause an issue in building the network. I expect to have a relatively large dataset around 880,671 publications, although this number can change given the computational burden that I might face. 
+
+This data will include details on the publication itself, as well as the authors and their affiliations, and most importantly the subject category classification. I will use the latter to form the research space, subjects that classify together a given publication will be considered related, and from there the creation of the research space is straight forward. 
+
+As for the metrics of interest, and following the preliminary literature review, the proper metrics this study will adopt follow the approach in [@guevara2016_theresearchspace] (relatedness, relatedness density, and the Revealed Comparative Advantage), as well as co-location of the related research fields (which aligns with the where dimension in Hidalgo's framework). The proposed study will also control for the socio-economic factors (with metrics such as Population, GDP per Capita, and the Gini index). However the main challenge I see in this context is the measure of complexity. Before considering a naive adaptation of the EC Index, maybe a different measure should be adopted instead. The reason behind this logic is a simple question: What is complex knowledge? Although the mathematical response to this question is clear in the literature, a more careful answer should be considered, especially with the criticism in this specific area as seen in [@tacchella2012].    
+
+
+To answer the first research questions a linear probablistic model will be used. This model rergresses entery (the possibility to enter a new scientific area, 1 denotes entery, 0 denotes possibility of entery) on other variables in question(relatedness, relatedness density, and the Revealed Comparative Advantage, co-location of the related fields, the complexity of entities and of scientific fields as well as the socio-economic controls I mentioned earlier). This model targets mainly the characteristics of the knowldge for a specific entity and their influence in the probablity to enter new scientific areas. 
+
+As for the second research question, reliance on network measures (degree centrality and eigenvector centrality) is essential following [@balland_2019collaboration]. The Degree of Centrality refer to the number of direct connections of a given node, while Eigenvector centrality accounts for the centrality of nodes that another given node is connected to. Although these metrics are quite straight forward to compute and measure, a challenging task would be to properly link it with the answers to first question in an appropriate framework. 
+
+
+## Time Schedule
+
+For this proposed study, The schedule will be divided into five iterative phases as shown in the table below.
+For the first phase, I successfully managed to narrow down the scope of research to two very specific research questions, thus the scope, the literature, and the objectives are clearly stated. As for the Second phase, I kicked off this proposed study with a pilot paper that is submitted to the FERENC FARKAS conference. This study focuses mainly on the Hungarian Research landscape and target the first research question. The third phase will be devoted for completing data collection, cleaning and management, this phase should take around five to seven months, I expect all the data will be ready by September (counting for other pending projects and classes this spring). Additionally, Scopus seem to be open to provide the complete needed data (around 800 thousand publication), although further discussions with them might be necessary.
+The Forth phase will revolve around the computations and the calculations required for the  methodology outlined in the previous section. This will take relatively a long period given the astronomical size of the expected data. Thus, if the data collection process is on time, and no technical difficulties appear, by the end of December 2024, all the metrics will be put in place.
+The Fifth phase will be dedicated to The analysis of the results, and the proper interpretation of these results, this should take up to February 2025. 
+Finally, since this work is easily extendable and highly iterative, i.e: it's very probable that I will have to recheck and work on data management in phase four should I find any issues or mistakes in conceptualization at that point, which might take the entirety of the month of March. Thus I expect to start writing the actual Thesis text by April 2025.
+  
+
+  
+  
+
+| Phase                    | Duration | Start    | End      |
+|--------------------------|----------|----------|----------|
+| Narrowing down the scope and objectives | DONE |  |  |
+| Pilot paper submission to Ferenc Farkas conference | DONE |  |  |
+| Data collection, cleaning, and management | 5-7 months | March 2024 | September 2024 |
+| Computations and calculations for methodology | 3-4 months | September 2024 | December 2024 |
+| Analysis and interpretation of results | 2 months | January 2025 | February 2025 |
+| Rechecking and data management (if needed) | 1 month | March 2025 | March 2025 |
+| Writing the Thesis text | Starts in April 2025 | April 2025 | TBD |
+
+
+## Conclusion
+
+The preliminary literature review highlights the importance of related knowledge and geographical proximity in academic collaborations. However, the literature lacks content in dissecting the influence of collaboration on the characteristics of knowledge for a specific entity. This proposed study builds on these insights and gaps by investigating the dynamics of academic collaboration in relation to research topics and their interaction with the research space and the characteristics knowledge for Central European countries, regions and organizations. This proposed research seeks to deepen the understanding of these relationships, by employing the tools and methods from the  Economic Complexity (EC) paradigm and network science. The expected contribution of this study is a comprehensive multilevel framework that provides clear policy implication for entities of interest. 
+
+
+\newpage
+
+## References
+
+

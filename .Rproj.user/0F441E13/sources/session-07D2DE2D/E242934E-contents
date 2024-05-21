@@ -1,0 +1,169 @@
+
+### I designed this so that no one need to have an issue dealing with large data files.
+### Instead you can simply run this on your machine (the last table is huge it can break your seesion)
+
+
+pacman::p_load(tidyverse, here)
+
+
+
+
+path <- here('data', 'WoS2')
+
+# data <- read_tsv(here('data','WoS','savedrecs18001-19000.txt'))
+# List all .txt files in the directory
+txt_files <- list.files(path = path, pattern = "\\.txt$", full.names = TRUE)
+
+# Read each .txt file into a list of data frames
+list_of_data_frames <- map(txt_files, read_tsv)
+
+
+
+# Define the selected variables and new names in independent vectors
+selected_vars <- c("TI", "DT", "PT", "PY", "DI", "AU", "C1", "C3", "DE", "ID", "WC", "WE", "SC", "AB", "TC", "SO")
+  new_names <- c("DocumentTitle", "DocumentType", "PublicationType", "PublicationYear", "DOI",
+                 "Authors", "AuthorAffiliation", "AuthorAffiliation2", "AuthorKeywords", "KeywordsPlus",
+                 "WoSCategories", "ExpandedCategories", "SubjectCategory", "Abstract", "TimesCited", "SourcePublication")
+
+# Define a function to filter and rename dataset columns
+filter_and_rename <- function(dataset) {
+  dataset %>%
+    select(all_of(selected_vars)) %>%
+    rename_with(~new_names, all_of(selected_vars)) %>%
+    mutate(
+      across(
+        c(TimesCited, PublicationYear),
+        as.numeric
+      )
+    ) %>%
+    janitor::clean_names()
+}
+
+
+wos_data <- list_of_data_frames %>%
+  map(filter_and_rename) %>%
+  bind_rows()
+
+
+# ################################################################################
+# ################################################################################
+# ################################################################################
+# # CLEAN DATA
+#
+# clean_wos <- read_csv(here('data', 'WoS', 'clean_wos.csv'))
+
+clean_wos <- wos_data %>%
+  distinct(doi, .keep_all = T) %>%
+  filter(!is.na(authors) & !is.na(publication_year) & !is.na(author_keywords) &
+         !is.na(keywords_plus) & !is.na(author_affiliation) & !is.na(wo_s_categories) &
+         !(publication_year %in% c(25, 30, 64)))
+
+
+clean_wos %>% write_csv(here('data', 'WoS2', 'clean_wos.csv'))
+
+# clean_wos <- read_csv(here('data', 'WoS2', 'clean_wos.csv'))
+
+# adding id to the each paper
+
+wos_ided <- clean_wos %>%
+  rowid_to_column()
+
+################################################################################
+################################################################################
+################################################################################
+# DIVIDE DATA
+
+
+################################################################################
+# ## by authors and affiliation:
+# THERE'S A POTENTIAL ISSUE WITH AUTHORS BEING AFFILIATED WITH MULTIPLE
+# ENTITIES SIMULTANEUOUSLY FOR A SINGLE PAPER
+# NOT SURE HOW TO MITIGATE THIS.
+################################################################################
+
+
+
+
+# wos_ided %>%
+#   select(rowid, publication_year, author_affiliation, document_title, doi) %>%
+#   mutate(
+#     authors = str_extract(author_affiliation, "\\[.*?\\]"), # Extract authors
+#     affiliation = str_extract(author_affiliation, "(?<=\\]).+?(?=, [^,]+$)"), # Extract affiliation
+#     country = str_extract(author_affiliation, "[^,]+$") # Extract country
+#   ) %>%
+#   mutate(
+#     authors = str_remove(authors, "\\[|\\]"), # Remove brackets from authors
+#     affiliation = str_trim(str_remove(affiliation, "\\[.*?\\]")) # Remove authors and trim spaces from affiliation
+#   ) %>% View()
+
+
+# THIS CODE ALLOWS TO EXTRACT THE INSTITUTIONS WITHIN THE AFF2 FROM C3 COLUMN
+# THIS MEANS THAT WE WILL HAVE INFORMATION LOSS SINCE AFF2 DOESN'T NECESSARILY
+# CONTAIN THE FULL INFORMATION FROM AFF1
+################################################################################
+# THIS IS A MAJOR ISSUE THAT SHOULD BE ADDRESSED IN LATER STAGES OF THE RESEARCH
+################################################################################
+
+wos_aff <- wos_ided %>%
+  select(rowid, author_affiliation, authors, author_affiliation2)%>%
+  separate_rows(author_affiliation2, sep = ";\\s*")
+  # UNTILL WE FIGURE OUT HOW TO HARMONIZE AUTHOR GROUPS AND COUNTRIES
+  # WE DON'T REALLY NEED THIS
+  # mutate(
+  #   countries = sapply(str_extract_all(author_affiliation, "(?<=,\\s)[^,;\\[]+(?=(; \\[|$))"),
+  #                      function(x) paste(x, collapse = "| ")),
+  #   # countries = sapply(countries, clean_countries),
+  #   author_groups = sapply(str_extract_all(author_affiliation, "\\[.*?\\]"),
+  #                          function(x) paste(x, collapse = "| "))
+  # ) %>%
+  # mutate(
+  #   institutions = gsub(";", "|", author_affiliation2)
+  # ) %>%
+  # separate_rows(institutions, sep = "\\|")
+
+## by main paper characteristics
+
+
+wos_paper <- wos_ided %>%
+  select(
+    rowid, publication_year, document_title, document_type, publication_type,
+    source_publication, times_cited
+  )
+
+
+## by subject category
+
+wos_sc <- wos_ided %>%
+  select(rowid, publication_year, subject_category) %>%
+  separate_rows(subject_category, sep = ";\\s*")
+
+
+## by keywords
+
+wos_kw <- wos_ided %>%
+  select(rowid, publication_year, author_keywords) %>%
+  separate_rows(author_keywords, sep = ";\\s*")
+
+
+################################################################################
+# ## JOINING THE DATA TOGETHER
+# MANY TO MANY RELATIONSHIPS : POTENTIAL ISSUE?
+################################################################################
+
+
+# wos_full <- wos_paper %>% 
+#   left_join(wos_sc) %>% 
+#   left_join(wos_kw) %>% 
+#   left_join(wos_affiliations)
+
+
+# uncomment if needed
+# wos_full %>%
+#   write_csv(here('data', 'full_joined_wos_data.csv'))
+
+# ns <- map( c('wos_paper', 'wos_affiliations', 'wos_kw', 'wos_sc'), function(x) paste0(here('data', 'clean_data'),'/', x,  '.csv'))
+# 
+# xs <- list(wos_paper, wos_affiliations, wos_kw, wos_sc)
+# 
+# 
+# map2(xs, ns, function(x,y) x %>% write_csv(y))

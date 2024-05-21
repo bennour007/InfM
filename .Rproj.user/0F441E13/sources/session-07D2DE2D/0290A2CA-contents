@@ -1,0 +1,167 @@
+---
+title: "How Hungarian Universities and Research Institutions Can Expand Their Scientific Expertise?"
+author: 
+  - Bennour Mohamed Hsin^[University of Pécs, Faculty of Business and Economics, Doctoral School of Regional Studies, supervised by Dr.Kehl Dániel]
+date: "2024-02-28"
+output: 
+    pdf_document: 
+      latex_engine: xelatex
+      includes:
+        in_header: header.tex
+editor_options: 
+  chunk_output_type: console
+bibliography: refs.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+pacman::p_load(tidyverse, gt)
+
+joined_wos <- readr::read_csv(here::here('data', 'clean_data', 'joined_wos2.csv'))
+data_normalized <- readr::read_csv(here::here('data', 'data_normalized.csv'))
+
+summary_models <- readRDS("results/summary_models.rds")
+summary_SCI <- readRDS("results/summary_SCI.rds")
+summary_r_density <- readRDS("results/summary_r_density.rds")
+summary_fe_SCI <- readRDS("results/summary_fe_SCI.rds")
+summary_fe_r_density <- readRDS("results/summary_fe_r_density.rds")
+```
+
+# Abstract
+
+Knowledge is a corner stone of a prosperous society as it drives efficiency and innovation, both imperative for a growing and functioning capitalistic economy. However knowledge, especailly the tacit kind, is not easily captured by economic indicators and tends to be spatially unflexible. In this study we approximate regional tacit knowledge with the Scientific capabilities of local Universities and Research Intitutions. Our objective is to unravel the patterns of specializations of these Institutions, simply put, What are the factors that influence the capacity of Institutions to adopt related/unrelated knowledge and to what level of complexity would that knowledge be given the state of the knowledge base. To answer this question and further investigate the potential answers we use a dataset containing detailed metadata on 37834 journal publications from Hungarian Universities and Research Institutions between 2013 and 2024 from the WoS database. Then  we create a network relating Subject Categories with these Institutions's publications with which we compute their Knowledge Complexity, Relatedness Density, and Relative Comparatve Advantage, we use these indicators to explain the probablity of entring (specializing in) a new domain of knowledge or subject categories. 
+
+## Introduction
+
+Knowledge comes in multiple forms, we can observe knowledge in technical artifact and gadgets (physical), we can also refer to it in books and documentation, and tacit knowledge that is formed out of experience and exposure and is not physically encoded and is hard to spread ([@balland2022_paradigm]). Measuring the contribution of tacit knowledge has been alaways problematic for researchers as there's no certain way to properly aggregate it into an indicator that dignifies it and conserve the information. The paradigm of Economic Complexity (or EC) treats this problem by using natwork science approach that captures the interaction between different agent and conserve the information within a specific system enabling an appropriate approximation of the contribution of such tacit knowledge on that system. In this study our aim is to use the tools within this paradigm to evaluate the specialization patterns in Hungarian Universities using publication data. Although the reader might think that the study only target documented knowledge in this case, the analysis will also allow to capture tacit knowledge within and across these institutions. Investigating specialization patterns in this context, also allow to enravel the academic strengths and weaknesses of these institutions, stretching the analysis over time will also allow to assess their potential in related and unrelated areas of specialization which can optimize funding, spending, and enable a smart specialization that can increase the quantity and the quality of output (in terms of publication) for a certain institution. Albeit, this is useful and quite insightful, relating such analysis to the regional context of each institution can also reveal the patterns of interactions and influence which allows a smarter specialization that accounts for not only academic factor, but also cultural and socio-economic factors within the target region. The idea behind smart specialization has been put into a theoretical framework by [@balland2019_smart] focusing on technological specialization at NUTS3 level of European regions. We adopt a similar methodology that focuses on the specialization patterns of a sample of hungarian universities between 2013 and 2024. The remaining of the paper is as follows: section 2 will be dedicated for the data and methodology, section 3 will present the results of this study, and sections 4 will discuss and conclude the paper. 
+
+## Data and methodology
+
+Mapping scientific production patterns is not a new area of research, many studies have investigated the dynamics behind scientific production, collaboration and excellence. For instance [@leydesdorf2009_aglbalmap] investigated the decomposition of subject categories with factor analysis, whereas [@waltman2010_aunified] proposed a framework that unifies, theoretically, mapping and clustering techniques for bibliometric networks. These studies, among others, consider that scientific knowledge is related to each other and can be connected via multiple dimensions such as citations, co-authorship, co-location, etc. The patterns of knowledge that can be unraveled from these dimensions are used to predict the potential of accessing a new area of knowledge for a given instance (authors, institutions, regions, etc) as illustrated in [@alshamsi2018_optimal] and emphasized in [@balland2022_doscientific] whom also specified that these patterns, assessed in terms of the entery to a new scientific area, are also reliant on the presence of related scientific knowledge to that area for that instance, which is directly connected to the principle of relatedness pioneered in [@boschma2017] and [@hidalgo2018]. The principle of relatedness, a core component of the EC paradigm, has been used nonetheless to conclude in many studies that new knowledge is produced and emerges in regions where related knowledge is present, in the context of scientific production this has been done in [@guevara2016_theresearchspace] and in [@boschma2014_scientificknowledge]. This principle has been popularly used in applications for trade data and patent data studies, but less so in bibliometric studies. In addition to relatedness as a factor inciting scientific production, the complexity of knowledge is also of great importance, this stems form the idea that knowledge is not uniform for all areas, as some knowledge requires huge effort to learn and imitate, and other knowledge less so. In our context, scientific complexity measures the capacity of an instance or a region to absorb complex knowledge, enabling a competitive advantage compared to other instances or regions. Complexity as another core component of the EC paradigm has been proven useful and meaningful as an explanatory factor for regional development [@davis2019_relatedness]. However, there are not as many studies investigating the complexity of scientific knowledge and its impact on producing new knowledge although there some attempts to do so especially in [@heimeriks2019_scientificknowledge] among others. 
+
+In this study, we attempt to leverage the EC paradigms and its tools to investigate how Scientific Complexity and relatedness of Hungarian higher education institution contribute to the potential of accessing a new scientific area. Essentially we are trying to answer two questions: 
+
+- How does the relatedness and complexity of Hungarian institutions affect their entery to a new subject category or scientific field? 
+
+- Are there different dynamics to entering new scientific fields for different levels of relatedness/complexity?
+
+To answer these questions, we extracted data from the Web of Science (WoS) Database, following a search limited to English language publication in collection of 38 Hungarian Universities and institutions affiliated with the Hungarian Research Network (HUN-REN) between 2013 and 2024. The data extracted from WoS concerns mainly 4 aspects that are determintal for our analysis: authors' affiliations, year of publication, and WoS subject categories. Adding to that we appended our data with the location of the observed affiliations (City). We used simple text mining techniques to extract for each document the details for each author affiliation. we ended up with 37834 document in total. The extracted details where then organized in a table that takes links the affiliations mentioned for each document, the year of publication and the corresponding WoS Subject categories assigned to that document.
+The data at hand needed to be further transformed into a proper format that enables network analysis, thus we constructed a two mode network based on the affiliations and the subject categories observed, that allowed us to construct a network of affiliations and subject categories. We also appended this data with City levels details which include City and NUTS3-specific regional indicators. The use of indicators at mixed levels of administrative boundaries aggregation was due to an issue of data availability.
+
+
+Using this network data we computed several complexity related indicator that will be used in another phase, the Relative Scientific Advantage (RSA) ,following a similar methodology as [@balland2022_doscientific], denoting specialization patterns is constructed as follows :
+
+$$
+RSA_{i,s}^{t} = \frac{\text{publications}_{i,s}^{t} / \sum_i \text{publications}_{i,s}^{t}}{\sum_i \text{publications}_{i,s}^{t} / (\sum_i \sum_s \text{publications}_{i,s}^{t})}
+$$
+RSA is an indicator denoting the level of specialization for a specific institution in a specific scientific area. For a period $t$, the RSA in the scientific area $s$ for institution $i$ is the share of scientific output in area $s$ from all the scientific output in all the other areas divided by the share of that scientific area for all the other institutions. 
+
+
+Additionally we also compute the relatedness density of the institutions in our data. This is done in two steps, first we calculate the scientific subject space which is a measure of relatedness between all scientific areas (normalized with cosine) then we use this matrix to compute the density of a given scientific area $s$ for an institute $i$. This measure reveals how much of related knowledge for a given subject $s$ that institute $i$ has already. For example if a given institution has an RSA superior to 50% for 2 scientific areas that are related to 2 others (i.e 2 out of 4) then it's relatedness density is 50%. 
+
+
+$$
+\text{RELATEDNESS-DENSITY}_{s,i}^{t} = \left( \frac{\sum_{j \in i, j \neq s} \delta_{s,i}^{t}}{\sum_{j \neq s} \delta_{s,i}^{t}} \right) \times 100
+$$
+
+The density of related scientific areas for an area $s$ at an institution $i$ at time $t$ is computed using the sum of the relatedness of a scientific area $s$ from all other areas (denoted as $j$) $\delta_{si}$ in which the institution $i$ has an RSA superior to 50%, divided by the sum of relatedness of that scientifc area $s$ to all the other areas for rest of institutions.
+
+
+To answer these questions we rely on a linear probablistic model that rergress entery (the possibility to enter a new scientific area, 1 denotes entery, 0 denotes possibility of entery) on other variables in question. we first investigate the first question using the following model fixing the effect on the subject categories, the region in question (the city of the specific institution) and time.
+
+
+
+
+$$
+\begin{aligned}
+\text{entry}_{i,s,t} &\sim \text{relatedness-density}_{i,s,t} + \text{SCI}_{i,t} + \text{SuCI}_{s,t} + \text{RSA}_{i,s,t} + \\
+&\quad \text{number-publication}_{i,s,t} + \text{number-students}_{r,t} + \text{population}_{r,t} + \text{gdp-c}_{r,t} + \\
+&\quad \text{pps}_{r,t} + \phi_{s} + \gamma_{r} + \theta_{t} + \epsilon_{i,s,t}
+\end{aligned}
+$$
+
+
+
+
+where :
+
+1. **Entry:** The dependent variable indicating whether an institution enters a new subject category. This is modeled as a binary outcome (1 for entry, 0 for potential to enter, with NA denoting existing engagement in the subject category). This variable is calculated by observing the change in RSA between two periods for a fiven scientific area.
+
+
+2. **Relative Scientific Advantage (RSA):** This metric helps identify the areas where Hungarian institutions are specialized compared to others. It indicates the relative strength or focus of an institution in specific subject categories.
+
+3. **Relatedness Density (relatedness_density):** This measures the closeness or similarity between different subject categories based on the institutions' research outputs. It helps in understanding how related the existing research areas of an institution are to new potential areas of entry.
+
+4. **Scientific Complexity Index (SCI) and Subject Complexity Indey (SuCI):** This refers to the complexity of institutions (SCI) and subject categories(SuCI).
+
+5. **Control Variables:** These include metrics like the number of publications (n_pub), number of students in that city (num_students), population (pop), and economic indicators like GDP per capita (gdp_c) and purchasing power standards (pps).
+Then we regress the same model but on different levels (higher and lower) of relatedness density and Scientific complexity based on th decomposition to examine if there's different dynamics in different relatedness density levels. 
+
+In our analysis, a suite of statistical models was employed to scrutinize the factors influencing an institution's potential to enter a new scientific area. The 'Full Model with Fixed Effects' (also denoted as FE in table 2 and table 3) serves as a comprehensive framework, incorporating city, time period, and industry fixed effects to treat for unobserved heterogeneity while evaluating the collective impact of relatedness density, institutional complexity, relative scientific advantage and additional variables and controls. Additionally the 'Full Model' (also denoted as model 1 in table 2 and table 3) strips away fixed effects to evaluate the direct effects of the studied variables. The 'Basic Model' (also denoted as model 2 in table 2 and table 3) narrows the focus to the singular effect of relatedness density, distilling the analysis to its most elemental form. This model underscores the isolated impact of relatedness, stripping away other complexities to understand its role in scientific area entry. The 'Complexity Model' (also denoted as model 3 in table 2 and table 3) reintroduces variables, adding to the equation institutional and subject complexity, relatedness  as well as the level of specialization captured by RSA. This model captures the relationships between these elements and their influence on subject entery. Lastly, the 'Control Model' (also denoted as model 4 in table 2 and table 3) diverts attention to other external factors such as publication output, student body size, population metrics, GDP per capita, and purchasing power standards. This model assesses how broader socioeconomic indicators and internal factors to the institution and its city intersect with scientific expansion. Furthermore, we conduct additional analyses using data segmented by varying levels of complexity and relatedness density. By splitting the data based on upper and lower quartiles of 'SKI' (institutional complexity) and 'relatedness density', we generated distinct subsets representing different strata of institutional attributes. For each subset, corresponding models were recalibrated to examine how varying degrees of complexity and relatedness affect entry into new domains using the same models we discussed. 
+
+
+## Results
+
+In this investigation, we explored the factors influencing Hungarian higher education institutions' likelihood of entering new scientific fields. The results derived from a suite of statistical models enable us to answer the key research questions justifying this study.
+
+The results of our analysis summarized in the following tables (1, 2 and 3) suggest that relatedness density has a positive effect on the likelihood of entery to a new scientific area (between 10% and 12% for the general models), however, for lower scientific complexity levels its contribution to the fixed effect model is not significant, wherhas it is signficant for the same model at higher levels of complexity (17%) with the coefficients being around twice as important than the ones we got from the same models at lower levels, this difference is not observed when treating different levels of relatedness density(significant for all models between 5% and 9% for lower levels and 8% to 9% for higher levels). Our results also suggest that scientific complexity is significant with a negative effect on entry (between -30.7% and -35.3% for the general models), whereas for different complexity levels in the data the results are mixed, on the one hand, at lower levels of complexity the variable is not significant with fixed effects, but is significant and positive for the other models(26.4% and 32%) however, at higher levels of complexity variable is significant for all models including the one with fixed effects where its coefficient is in fact negative. But for different levels of relatedness density the scientific complexity index is significant and negative for both levels with similar values of contribution for all the models. As for the subject complexity index, we observe that this variable is significant for all models in the general analysis, however, its coefficient is positive (8.7%) for the fixed effect model and negative for the rest (-8.2% for the full model and -6.7% for the complexity model), its coefficient is also significant and negative for lower levels of scientific complexity and positive for higher levels with the exception of the fixed effect model's coefficient at the higher levels of complexity which is not significant at all. Subject complexity indey also seems to be not significant for higher levels of relatedness density, but significant and negative for lower levels with the exception of the fixed effect model. 
+As for the Relative Scientific Advantage (RSA),RSA consistently demonstrates a positive association with the probability of entering new scientific areas in the general analysis (between 2% and 4%), suggesting that institutions leveraging their distinctive strengths are more likely enter new scientific domains. The magnitude of RSA's impact remains robust across varying levels of scientific complexity and relatedness density, for lower levels complexity between 1% and 2%, and for higher levels between 8% and 10% suggesting that institutions with higher levels of complexity benefit more of specialization that institutions with lower levels in terms of entering new scientific domains, as for lower levels of reltedness RSA is also significance and positive (between 2% ad 4%) with similar results at higher levels of relatedness density but with the fixed effect model being insignificant. 
+Additionally, In the general analysis, the effect of the the number of publications (n_pub) provides very weak coefficients for the full model (-0.5%) and the control model (-0.4%) and remains insignificant for the fixed effect model. However, nuances emerge when exploring different institutional complexities and relatedness densities. Particularly, in lower complexity environments, the negative influence of publication volume becomes more pronounced (-0.7% for the full model and the control model, and -0.1% for the fixed effect model), suggesting that extensive existing research might inhibit novel explorations for institutions that are lacking behind in terms of complexity. This effect is better for institutions with higher levels of complexity (-0.1% for the full and control models), suggesting that the amount of publication can be impactful in terms of entery if the existing research in those institutions is already complex enough. Conversely, this variable's effect varies differently across different levels of relatedness density(for lower levels -0.9% for the full model, -1% for the control model, and insignificant with fixed effect and for higher levels -0.2% for full model, -0.3% for control model and insignificant for the fixed effect model), indicating that the sheer volume of publications does not straightforwardly predict new domain entry in varying contexts of relatedness, rather for institutions with low relatedness density the number of publication negatively impact the likelihood of entery, this effect is significantly lower for institutions with higher relatedness density, which might suggest that the number of publication might be of value when these publications range across more diverse scientific areas. 
+The variables number of students (num_students) and population (population) generally do not exhibit significant relationships with the likelihood of institutional entry into new scientific domains, indicating that these broader demographic factors might not play a pivotal role in academic expansion strategies. However, nuances in the data reveal that in environments of high institutional complexity, a larger student body may have a supportive role, as indicated by its positive significance in high complexity scenarios within the control model. This suggests that under certain conditions, the size of the student body could contribute to institutional adaptability and expansion, highlighting the complex interplay between institutional characteristics and external demographic factors in shaping the dynamics of entering new scientific areas.
+For the economic controls GDP per Capita (gdp_c) and Purchasing Power Standards (pps) they seem to exhibit non existing direct impact on the likelihood of new domain entry in the general analysis as well as with varying levels of comlexity and relatedness despite its significance in some cases. This might align with the notion that academic exploration and expansion might transcend immediate economic contexts. 
+
+
+
+
+
+\newpage
+
+```{r, echo = FALSE}
+summary_models 
+```
+
+
+\blandscape
+\begin{table}
+\centering
+
+
+```{r, echo = FALSE}
+summary_SCI %>% 
+  gt::tab_spanner_delim(delim = '|') %>% 
+  gtsave(filename = "complexity_levels.tex", as = "latex")
+```
+
+\end{table}
+\elandscape
+\newpage
+
+\blandscape
+\begin{table}
+\centering
+
+```{r, echo = FALSE}
+summary_r_density %>% 
+  gt::tab_spanner_delim(delim = '|') %>% 
+  gtsave(filename = "relatedness_levels.tex", as = "latex")
+  
+```
+\end{table}
+\elandscape
+\newpage
+
+
+
+## Conclusion
+
+
+This study examines the influence of scientific complexity and relatedness on the ability of Hungarian higher education institutions to enter new scientific fields. Utilizing data from 37834 journal publications across 38 universities and research institutions from 2013 to 2024, the research aims to uncover the specialization patterns of these institutions and understand how they adapt to and absorb both related and unrelated knowledge domains.
+
+The methodology revolves around network analysis, leveraging indicators such as Knowledge Complexity, Relatedness Density, and Relative Comparative Advantage calculated from publication data. These metrics are employed to analyze the probability of institutions specializing in new knowledge domains or subject categories. The principle of relatedness and the concept of Economic Complexity (EC) serve as the theoretical underpinnings, helping to contextualize the transfer and emergence of tacit knowledge within and across these institutions.
+
+By dissecting the data based on varying levels of scientific complexity and relatedness density, the study provides nuanced insights into how different environmental and institutional contexts affect the propensity for academic exploration and expansion. The findings reveal significant dynamics influenced by relatedness density and scientific complexity, highlighting the importance of institutional strengths and academic strategies in navigating the landscape of new scientific domains. This comprehensive approach not only illuminates the specialization patterns within Hungarian higher education but also contributes to the broader discourse on knowledge production and regional development.
+
+The primary findings from our comprehensive study on Hungarian higher education institutions' entry into new scientific areas reveal significant nuances based on relatedness density and scientific complexity. Notably, relatedness density consistently enhances the likelihood of entering new areas, with its impact significantly more pronounced at higher levels of institutional complexity (17%) compared to lower levels. Conversely, scientific complexity generally deters entry into new fields, with its negative influence more significant in environments of high complexity. Interestingly, while scientific complexity presents a barrier, institutions with distinct Relative Scientific Advantage (RSA) are more likely to penetrate new domains, especially at higher levels of institutional complexity, where the benefits of specialization become more tangible. The number of publications exhibits a nuanced impact, suggesting potential inhibitory effects on exploring new fields in less complex or less related environments. Demographic factors such as the number of students and population size show minimal direct impact on new domain entry, indicating that internal institutional characteristics and academic strategies might outweigh broader demographic influences.
+
+## References
+

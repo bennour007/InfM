@@ -1,0 +1,275 @@
+@article{hidalgo2007product,
+  title={The product space conditions the development of nations},
+  author={Hidalgo, C{\'e}sar A and Klinger, Bailey and Barab{\'a}si, A-L and Hausmann, Ricardo},
+  journal={Science},
+  volume={317},
+  number={5837},
+  pages={482--487},
+  year={2007},
+  publisher={American Association for the Advancement of Science}
+}
+
+@article{hidalgo2021economic,
+  title={Economic complexity theory and applications},
+  author={Hidalgo, C{\'e}sar A},
+  journal={Nature Reviews Physics},
+  volume={3},
+  number={2},
+  pages={92--113},
+  year={2021},
+  publisher={Nature Publishing Group UK London}
+}
+
+@article{hidalgo2023policy,
+  title={The policy implications of economic complexity},
+  author={Hidalgo, C{\'e}sar A},
+  journal={Research Policy},
+  volume={52},
+  number={9},
+  pages={104863},
+  year={2023},
+  publisher={Elsevier}
+}
+
+@article{balland2018smart,
+  title={Smart specialization policy in the European Union: relatedness, knowledge complexity and regional diversification},
+  author={Balland, Pierre-Alexandre and Boschma, Ron and Crespo, Joan and Rigby, David L},
+  journal={Regional studies},
+  year={2018},
+  publisher={Taylor \& Francis}
+}
+
+@article{balland2017geography,
+  title={The geography of complex knowledge},
+  author={Balland, Pierre-Alexandre and Rigby, David},
+  journal={Economic geography},
+  volume={93},
+  number={1},
+  pages={1--23},
+  year={2017},
+  publisher={Taylor \& Francis}
+}
+
+@article{boschma2017relatedness,
+  title={Relatedness as driver of regional diversification: A research agenda},
+  author={Boschma, Ron},
+  journal={Regional Studies},
+  volume={51},
+  number={3},
+  pages={351--364},
+  year={2017},
+  publisher={Taylor \& Francis}
+}
+
+@article{alshamsi2018optimal,
+  title={Optimal diversification strategies in the networks of related products and of related research areas},
+  author={Alshamsi, Aamena and Pinheiro, Fl{\'a}vio L and Hidalgo, Cesar A},
+  journal={Nature communications},
+  volume={9},
+  number={1},
+  pages={1328},
+  year={2018},
+  publisher={Nature Publishing Group UK London}
+}
+
+@article{balland2022new,
+  title={The new paradigm of economic complexity},
+  author={Balland, Pierre-Alexandre and Broekel, Tom and Diodato, Dario and Giuliani, Elisa and Hausmann, Ricardo and O'Clery, Neave and Rigby, David},
+  journal={Research Policy},
+  volume={51},
+  number={3},
+  pages={104450},
+  year={2022},
+  publisher={Elsevier}
+}
+
+@article{blei2003latent,
+  title={Latent dirichlet allocation},
+  author={Blei, David M and Ng, Andrew Y and Jordan, Michael I},
+  journal={Journal of machine Learning research},
+  volume={3},
+  number={Jan},
+  pages={993--1022},
+  year={2003}
+}
+
+@article{koch2021economic,
+  title={Economic complexity and growth: Can value-added exports better explain the link?},
+  author={Koch, Philipp},
+  journal={Economics Letters},
+  volume={198},
+  pages={109682},
+  year={2021},
+  publisher={Elsevier}
+}
+
+@article{romero2021economic,
+  title={Economic complexity and greenhouse gas emissions},
+  author={Romero, Jo{\~a}o P and Gramkow, Camila},
+  journal={World Development},
+  volume={139},
+  pages={105317},
+  year={2021},
+  publisher={Elsevier}
+}
+
+@article{chavez2017economic,
+  title={Economic Complexity and Regional Growth Performance: Evidence from the Mexican Economy.},
+  author={Ch{\'a}vez, Juan Carlos and Mosqueda, Marco T and G{\'o}mez-Zald{\'\i}var, Manuel},
+  journal={Review of Regional Studies},
+  volume={47},
+  number={2},
+  year={2017}
+}
+
+@inproceedings{porteous2008fast,
+  title={Fast collapsed gibbs sampling for latent dirichlet allocation},
+  author={Porteous, Ian and Newman, David and Ihler, Alexander and Asuncion, Arthur and Smyth, Padhraic and Welling, Max},
+  booktitle={Proceedings of the 14th ACM SIGKDD international conference on Knowledge discovery and data mining},
+  pages={569--577},
+  year={2008}
+}
+
+@article{nasios2006variational,
+  title={Variational learning for Gaussian mixture models},
+  author={Nasios, Nikolaos and Bors, Adrian G},
+  journal={IEEE Transactions on Systems, Man, and Cybernetics, Part B (Cybernetics)},
+  volume={36},
+  number={4},
+  pages={849--862},
+  year={2006},
+  publisher={IEEE}
+}
+
+@inproceedings{arun2010finding,
+  title={On finding the natural number of topics with latent dirichlet allocation: Some observations},
+  author={Arun, Rajkumar and Suresh, Venkatasubramaniyan and Veni Madhavan, CE and Narasimha Murthy, MN},
+  booktitle={Advances in Knowledge Discovery and Data Mining: 14th Pacific-Asia Conference, PAKDD 2010, Hyderabad, India, June 21-24, 2010. Proceedings. Part I 14},
+  pages={391--402},
+  year={2010},
+  organization={Springer}
+}
+
+@article{griffiths2004finding,
+  title={Finding scientific topics},
+  author={Griffiths, Thomas L and Steyvers, Mark},
+  journal={Proceedings of the National academy of Sciences},
+  volume={101},
+  number={suppl\_1},
+  pages={5228--5235},
+  year={2004},
+  publisher={National Acad Sciences}
+}
+
+@inproceedings{neishabouri2020reliability,
+  title={Reliability of perplexity to find number of latent topics},
+  author={Neishabouri, Asana and Desmarais, Michel C},
+  booktitle={The Thirty-Third International Flairs Conference},
+  year={2020}
+}
+
+@article{tacchella2012new,
+  title={A new metrics for countries' fitness and products' complexity},
+  author={Tacchella, Andrea and Cristelli, Matthieu and Caldarelli, Guido and Gabrielli, Andrea and Pietronero, Luciano},
+  journal={Scientific reports},
+  volume={2},
+  number={1},
+  pages={723},
+  year={2012},
+  publisher={Nature Publishing Group UK London}
+}
+
+@article{broekel2019using,
+  title={Using structural diversity to measure the complexity of technologies},
+  author={Broekel, Tom},
+  journal={PloS one},
+  volume={14},
+  number={5},
+  pages={e0216856},
+  year={2019},
+  publisher={Public Library of Science San Francisco, CA USA}
+}
+
+@article{guerzoni2024pre,
+  title={Pre-entry knowledge base complexity and post-entry growth: evidence from Italian firms},
+  author={Guerzoni, Marco and Nuccio, Massimiliano and Tamagni, Federico},
+  journal={Industrial and Corporate Change},
+  volume={33},
+  number={1},
+  pages={126--151},
+  year={2024},
+  publisher={Oxford University Press UK}
+}
+
+@article{boschma2005proximity,
+  title={Proximity and innovation: a critical assessment},
+  author={Boschma, Ron},
+  journal={Regional studies},
+  volume={39},
+  number={1},
+  pages={61--74},
+  year={2005},
+  publisher={Taylor \& Francis}
+}
+
+@article{cristelli2013measuring,
+  title={Measuring the intangibles: A metrics for the economic complexity of countries and products},
+  author={Cristelli, Matthieu and Gabrielli, Andrea and Tacchella, Andrea and Caldarelli, Guido and Pietronero, Luciano},
+  journal={PloS one},
+  volume={8},
+  number={8},
+  pages={e70726},
+  year={2013},
+  publisher={Public Library of Science San Francisco, USA}
+}
+
+@article{ivanova2017economic,
+  title={Economic and technological complexity: A model study of indicators of knowledge-based innovation systems},
+  author={Ivanova, Inga and Strand, {\O}ivind and Kushnir, Duncan and Leydesdorff, Loet},
+  journal={Technological forecasting and social change},
+  volume={120},
+  pages={77--89},
+  year={2017},
+  publisher={Elsevier}
+}
+
+@article{ivanova2020measuring,
+  title={On measuring complexity in a post-industrial economy: The ecosystem’s approach},
+  author={Ivanova, Inga and Smorodinskaya, Nataliya and Leydesdorff, Loet},
+  journal={Quality \& Quantity},
+  volume={54},
+  pages={197--212},
+  year={2020},
+  publisher={Springer}
+}
+
+@article{sadeghi2020economic,
+  title={Economic complexity, human capital, and FDI attraction: A cross country analysis},
+  author={Sadeghi, Pegah and Shahrestani, Hamid and Kiani, Kambiz Hojabr and Torabi, Taghi},
+  journal={International Economics},
+  volume={164},
+  pages={168--182},
+  year={2020},
+  publisher={Elsevier}
+}
+
+@article{abbasi2021economic,
+  title={Economic complexity, tourism, energy prices, and environmental degradation in the top economic complexity countries: fresh panel evidence},
+  author={Abbasi, Kashif Raza and Lv, Kangjuan and Radulescu, Magdalena and Shaikh, Pervez Ahmed},
+  journal={Environmental Science and Pollution Research},
+  volume={28},
+  pages={68717--68731},
+  year={2021},
+  publisher={Springer}
+}
+
+@article{kazemzadeh2023does,
+  title={Does economic complexity increase energy intensity?},
+  author={Kazemzadeh, Emad and Fuinhas, Jos{\'e} Alberto and Shirazi, Masoud and Koengkan, Matheus and Silva, Nuno},
+  journal={Energy Efficiency},
+  volume={16},
+  number={4},
+  pages={29},
+  year={2023},
+  publisher={Springer}
+}

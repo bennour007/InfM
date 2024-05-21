@@ -1,0 +1,21 @@
+"0",""
+"0","tab2 <- read_csv("
+"0","  here::here(""results"", ""top_w.csv"")"
+"0",")"
+"1","[1mRows: [22m[34m7[39m [1mColumns: [22m[34m4[39m
+"
+"1","[36m──[39m [1mColumn specification[22m [36m─────────────────────────────────────────────────────────────────────────────────[39m
+[1mDelimiter:[22m "",""
+[31mchr[39m (4): Topic 1, Topic 2, Topic 3, Topic 4
+"
+"1","
+[36mℹ[39m Use `spec()` to retrieve the full column specification for this data.
+[36mℹ[39m Specify the column types or set `show_col_types = FALSE` to quiet this message.
+"
+"0","tab2 %>% "
+"0","  gt::gt() %>% "
+"0","  gt::tab_header(title = ""Table 2: Top 7 words for each topic"") %>% "
+"0","  gt::tab_style("
+"0","    style = gt::cell_text(size = gt::px(12)),"
+"0","    locations = gt::cells_body()"
+"0","  ) "

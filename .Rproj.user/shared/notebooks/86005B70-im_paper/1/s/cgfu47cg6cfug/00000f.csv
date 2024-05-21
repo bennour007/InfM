@@ -1,0 +1,16 @@
+"0","tab2 <- read_csv(here::here(""results"", ""top3_topics.csv""))"
+"1","[1mRows: [22m[34m21[39m [1mColumns: [22m[34m5[39m
+"
+"1","[36m──[39m [1mColumn specification[22m [36m─────────────────────────────────────────────────────────────────────────────────[39m
+[1mDelimiter:[22m "",""
+[31mchr[39m (5): Topic 1, Topic 2, Topic 3, Topic 4, Model
+"
+"1","
+[36mℹ[39m Use `spec()` to retrieve the full column specification for this data.
+[36mℹ[39m Specify the column types or set `show_col_types = FALSE` to quiet this message.
+"
+"0","tab2 %>% "
+"0","  gt::gt(groupname_col = ""Model"") %>% "
+"0","  gt::tab_header("
+"0","    title = ""Table 2: Best 3 models (topics and terms)"""
+"0","  )"

@@ -1,0 +1,63 @@
+pacman::p_load(tidyverse)
+
+data <- read_csv(here::here('data', 'clean_wos.csv'))
+
+
+data_narrow <- data %>% 
+  select(
+    all_of(
+      c('document_title', 'abstract', 'source_publication', 'publication_year', 'author_keywords', 'keywords_plus', 'wo_s_categories')
+    )
+  )
+
+
+data_w_kw <- data_narrow %>% 
+  mutate(
+    author_keywords = if_else(is.na(author_keywords), keywords_plus, author_keywords),
+    keywords_plus = if_else(is.na(keywords_plus), author_keywords, keywords_plus)
+  ) %>% 
+  unite('KW', c('author_keywords', 'keywords_plus'), sep = '; ', remove = F)
+
+
+# 2. Keyword Extraction
+# Define a function to extract keywords from text
+extract_keywords <- function(text) {
+  # Split keywords by semicolon
+  keywords <- unlist(strsplit(text, "; "))
+  # Return unique keywords
+  unique(keywords)
+}
+
+# Apply the function to each subset of keywords
+grouped_data <- data_w_kw %>% 
+  group_by(wo_s_categories) %>% 
+  mutate(keywords = list(extract_keywords(KW)))
+
+# 3. Keyword Frequency Calculation
+# Count the frequency of each keyword within each subset
+keyword_freq <- grouped_data %>%
+  unnest(keywords) %>%
+  count(wo_s_categories, keywords) %>%
+  arrange(desc(n))
+
+
+
+  
+# 4. Visualization
+# Create a bar chart to visualize keyword frequencies
+
+ggplot(keyword_freq, aes(x = keywords, y = n, fill = wo_s_categories)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~wo_s_categories, scales = "free") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(x = "Keyword", y = "Frequency", title = "Keyword Frequencies by Subject Categories")
+  
+    
+
+bibliometrix::biblioshiny(
+)
+  
+  
+  
+  
+  

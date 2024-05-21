@@ -1,0 +1,512 @@
+mydata <- tm_map(mydata, removeWords, myStopwords)
+# remove extra whitespace
+mydata <- tm_map(mydata, stripWhitespace)
+# Remove numbers
+mydata <- tm_map(mydata, removeNumbers)
+# Remove punctuations
+mydata <- tm_map(mydata, removePunctuation)
+# inspect(mydata)
+# Step 3: Tokenization (optional)
+corpus_text <- sapply(mydata, as.character)
+tidy_data <- tibble(text = corpus_text)
+tidy_data <- tidy_data %>%
+unnest_tokens(word, text)
+# Step 5: Create Document-Term Matrix (DTM)
+dtm <- DocumentTermMatrix(tidy_data)
+# WORD FREQUENCY IN THE CORPUS
+words <- tidy_data %>%
+group_by(word) %>%
+summarise(count= n()) %>%
+arrange(desc(count))
+# MAKE THIS LOOK BETTER
+words %>%
+top_n(100) %>%
+ggplot(aes(area = count, fill = word, label = word)) +
+guides(fill="none") +
+geom_treemap() +
+geom_treemap_text(colour = "white",
+place = "centre",
+size = 15) +
+scale_fill_viridis_d()
+# SAVE THIS AND USE IT LATER LOOKS GREAT
+wordcloud2::wordcloud2(words)
+data1 < read_tsv(here::here("data", "savedrecs1000.txt"))
+data1 <- read_tsv(here::here("data", "savedrecs1000.txt"))
+data1
+data2 <- read_tsv(here::here("data", "savedrecs1057.txt"))
+data2
+pacman::p_load(tidyverse, mallet, tidytext, tm, treemapify, topicmodels, bib2df)
+data1 <- read_tsv(here::here("data", "savedrecs1000.txt"))
+data2 <- read_tsv(here::here("data", "savedrecs1057.txt"))
+bind_rows(
+data1, data2
+) %>%
+filter(!is.na(AB))  #  REMOVE EMPTY ABSTRACTS FORM THE DATA
+data1 <- read_tsv(here::here("data", "savedrecs1000.txt")) %>%  select(TI, AB)
+data2 <- read_tsv(here::here("data", "savedrecs1057.txt")) %>%  select(TI, AB)
+main_data <- bind_rows(
+data1, data2
+) %>%
+filter(!is.na(AB))  #  REMOVE EMPTY ABSTRACTS FORM THE DATA
+main_data
+main_data <- bind_rows(
+data1, data2
+) %>%
+filter(!is.na(AB)) %>%   #  REMOVE EMPTY ABSTRACTS FORM THE DATA %>%
+distinct(TI, .keep_all = T)
+main_data
+# EXTRACTING ALL ABSTRACTS INTO ONE SINGLE CORPUS
+corpus_raw <- main_data %>%
+select(AB) %>%
+mutate(AB = as.character(AB)) %>%
+str_c(collapse = " ")
+# Step 1: Create a corpus
+corpus <- Corpus(VectorSource(corpus_raw))
+# Step 2: Text transformation
+# convert to lower case
+mydata <- tm_map(corpus, content_transformer(tolower))
+# remove anything other than English letters or space
+removeNumPunct <- function(x) gsub("[^[:alpha:][:space:]]", "", x)
+mydata <- tm_map(mydata, content_transformer(removeNumPunct))
+# remove stopwords
+mydata <- tm_map(mydata, removeWords, stopwords("english"))
+#u can create custom stop words using the code below.
+myStopwords <- c(setdiff(stopwords('english'), c("r", "big")),
+"eeg", "les", "c", "ie", "one", "e", "s", "co", "would", "will", "can",
+"however", "moreover", "use", "see", "used", "via", "amp", "ss", "algal",
+"use", "two", "also", "based", "key", "find")
+mydata <- tm_map(mydata, removeWords, myStopwords)
+# remove extra whitespace
+mydata <- tm_map(mydata, stripWhitespace)
+# Remove numbers
+mydata <- tm_map(mydata, removeNumbers)
+# Remove punctuations
+mydata <- tm_map(mydata, removePunctuation)
+# inspect(mydata)
+# Step 3: Tokenization (optional)
+corpus_text <- sapply(mydata, as.character)
+tidy_data <- tibble(text = corpus_text)
+tidy_data <- tidy_data %>%
+unnest_tokens(word, text)
+# this was not a good idea
+# corpus2 <- tm_map(mydata, Boost_tokenizer)
+# inspect(corpus2)
+# Step 4: Stemming or Lemmatization (optional)
+# I FOUND THIS STEP TO CREATE SOME PROBLEMS WITH THE WORDS
+# corpus2 <- tm_map(corpus2, stemDocument)  # Stemming
+# Step 5: Create Document-Term Matrix (DTM)
+dtm <- DocumentTermMatrix(tidy_data)
+# WORD FREQUENCY IN THE CORPUS
+words <- tidy_data %>%
+group_by(word) %>%
+summarise(count= n()) %>%
+arrange(desc(count))
+words
+# MAKE THIS LOOK BETTER
+words %>%
+top_n(100) %>%
+ggplot(aes(area = count, fill = word, label = word)) +
+guides(fill="none") +
+geom_treemap() +
+geom_treemap_text(colour = "white",
+place = "centre",
+size = 15) +
+scale_fill_viridis_d()
+# SAVE THIS AND USE IT LATER LOOKS GREAT
+wordcloud2::wordcloud2(words)
+# Convert DTM to matrix
+dtm_matrix <- as.matrix(dtm)
+# Set the number of topics
+k <- 10
+# Run LDA using MALLET
+lda_model_Gibbs <- LDA(dtm_matrix, k, method = "Gibbs")
+# Get the top words for each topic
+top_words_g <- terms(lda_model_Gibbs, 10)
+top_words_g %>%
+as_tibble() %>%
+mutate(across(everything(), ~ gsub("[\",\\\\]", "", .)))
+# Set the number of topics
+k <- 5
+# Run LDA using MALLET
+lda_model_Gibbs <- LDA(dtm_matrix, k, method = "Gibbs")
+# Get the top words for each topic
+top_words_g <- terms(lda_model_Gibbs, 10)
+top_words_g %>%
+as_tibble() %>%
+mutate(across(everything(), ~ gsub("[\",\\\\]", "", .)))
+# Get the topic distribution for each document
+doc_topics <- as.data.frame(lda_model_Gibbs@beta) %>% as_tibble()
+tidy(lda_model_Gibbs, matrix = "beta") %>%
+mutate(across(term, ~ gsub("[\",\\\\]", "", .))) %>%
+group_by(topic) %>%
+slice_max(beta, n = 5) %>%
+ungroup() %>%
+arrange(topic, -beta) %>%
+mutate(term = reorder_within(term, beta, topic)) %>%
+ggplot(aes(beta, term, fill = factor(topic))) +
+geom_col(show.legend = FALSE) +
+facet_wrap(~ topic, scales = "free")
+?LDA
+tidy(lda_model_Gibbs, matrix = "beta") %>%
+mutate(across(term, ~ gsub("[\",\\\\]", "", .))) %>%
+group_by(topic) %>%
+slice_max(beta, n = 5) %>%
+ungroup() %>%
+arrange(topic, -beta) %>%
+mutate(term = reorder_within(term, beta, topic)) %>%
+ggplot(aes(beta, term, fill = factor(topic))) +
+geom_col(show.legend = FALSE) +
+facet_wrap(~ topic, scales = "free")
+pacman::p_load(tidyverse, mallet, tidytext, tm, treemapify, topicmodels)
+data1 <- read_tsv(here::here("data", "savedrecs1000.txt")) %>%  select(TI, AB)
+data2 <- read_tsv(here::here("data", "savedrecs1057.txt")) %>%  select(TI, AB)
+main_data <- bind_rows(
+data1, data2
+) %>%
+filter(!is.na(AB)) %>%   #  REMOVE EMPTY ABSTRACTS FORM THE DATA %>%
+distinct(TI, .keep_all = T)
+# EXTRACTING ALL ABSTRACTS INTO ONE SINGLE CORPUS
+corpus_raw <- main_data %>%
+select(AB) %>%
+mutate(AB = as.character(AB)) %>%
+str_c(collapse = " ")
+# Step 1: Create a corpus
+corpus <- Corpus(VectorSource(corpus_raw))
+# Step 2: Text transformation
+# convert to lower case
+mydata <- tm_map(corpus, content_transformer(tolower))
+# remove anything other than English letters or space
+removeNumPunct <- function(x) gsub("[^[:alpha:][:space:]]", "", x)
+mydata <- tm_map(mydata, content_transformer(removeNumPunct))
+# remove stopwords
+mydata <- tm_map(mydata, removeWords, stopwords("english"))
+#u can create custom stop words using the code below.
+myStopwords <- c(setdiff(stopwords('english'), c("r", "big")),
+"eeg", "les", "c", "ie", "one", "e", "s", "co", "would", "will", "can",
+"however", "moreover", "use", "see", "used", "using", "via", "amp", "ss", "algal",
+"use", "two", "also", "based", "key", "find")
+mydata <- tm_map(mydata, removeWords, myStopwords)
+# remove extra whitespace
+mydata <- tm_map(mydata, stripWhitespace)
+# Remove numbers
+mydata <- tm_map(mydata, removeNumbers)
+# Remove punctuations
+mydata <- tm_map(mydata, removePunctuation)
+# inspect(mydata)
+# Step 3: Tokenization (optional)
+corpus_text <- sapply(mydata, as.character)
+tidy_data <- tibble(text = corpus_text)
+tidy_data <- tidy_data %>%
+unnest_tokens(word, text)
+# this was not a good idea
+# corpus2 <- tm_map(mydata, Boost_tokenizer)
+# inspect(corpus2)
+# Step 4: Stemming or Lemmatization (optional)
+# I FOUND THIS STEP TO CREATE SOME PROBLEMS WITH THE WORDS
+# corpus2 <- tm_map(corpus2, stemDocument)  # Stemming
+# Step 5: Create Document-Term Matrix (DTM)
+dtm <- DocumentTermMatrix(tidy_data)
+# inspect(dtm)
+# WORD FREQUENCY IN THE CORPUS
+words <- tidy_data %>%
+group_by(word) %>%
+summarise(count= n()) %>%
+arrange(desc(count))
+# VISUALISATION OF THE FREQUENCY
+# MAKE THIS LOOK BETTER
+words %>%
+top_n(100) %>%
+ggplot(aes(area = count, fill = word, label = word)) +
+guides(fill="none") +
+geom_treemap() +
+geom_treemap_text(colour = "white",
+place = "centre",
+size = 15) +
+scale_fill_viridis_d()
+# SAVE THIS AND USE IT LATER LOOKS GREAT
+wordcloud2::wordcloud2(words)
+## LET'S GO AFTER THE TOPIC MODELLING NOW!
+# Convert DTM to matrix
+dtm_matrix <- as.matrix(dtm)
+# Set the number of topics
+k <- 5
+# Run LDA using MALLET
+lda_model_Gibbs <- LDA(dtm_matrix, k, method = "Gibbs")
+# Get the top words for each topic
+top_words_g <- terms(lda_model_Gibbs, 10)
+top_words_g %>%
+as_tibble() %>%
+mutate(across(everything(), ~ gsub("[\",\\\\]", "", .)))
+# Get the topic distribution for each document
+doc_topics <- as.data.frame(lda_model_Gibbs@beta) %>% as_tibble()
+tidy(lda_model_Gibbs, matrix = "beta") %>%
+mutate(across(term, ~ gsub("[\",\\\\]", "", .))) %>%
+group_by(topic) %>%
+slice_max(beta, n = 5) %>%
+ungroup() %>%
+arrange(topic, -beta) %>%
+mutate(term = reorder_within(term, beta, topic)) %>%
+ggplot(aes(beta, term, fill = factor(topic))) +
+geom_col(show.legend = FALSE) +
+facet_wrap(~ topic, scales = "free")
+tidy(lda_model_Gibbs, matrix = "beta") %>%
+mutate(across(term, ~ gsub("[\",\\\\]", "", .))) %>%
+group_by(topic) %>%
+slice_max(beta, n = 5) %>%
+ungroup() %>%
+arrange(topic, -beta) %>%
+mutate(term = reorder_within(term, beta, topic)) %>%
+ggplot(aes(beta, term, fill = factor(topic))) +
+geom_col(show.legend = FALSE) +
+facet_wrap(~ topic, scales = "free")
+as.data.frame(lda_model_Gibbs@beta) %>% as_tibble()
+top_words_g %>%
+as_tibble() %>%
+mutate(across(everything(), ~ gsub("[\",\\\\]", "", .)))
+## LET'S GO AFTER THE TOPIC MODELLING NOW!
+# Convert DTM to matrix
+dtm_matrix <- as.matrix(dtm)
+# Set the number of topics
+k <- 5
+# Run LDA using MALLET
+lda_model_Gibbs <- LDA(dtm_matrix, k, method = "Gibbs")
+# Get the top words for each topic
+top_words_g <- terms(lda_model_Gibbs, 4)
+top_words_g %>%
+as_tibble() %>%
+mutate(across(everything(), ~ gsub("[\",\\\\]", "", .)))
+# Set the number of topics
+k <- 5
+# Run LDA using MALLET
+lda_model_Gibbs <- LDA(dtm_matrix, k, method = "Gibbs")
+# Get the top words for each topic
+top_words_g <- terms(lda_model_Gibbs, 7)
+top_words_g %>%
+as_tibble() %>%
+mutate(across(everything(), ~ gsub("[\",\\\\]", "", .)))
+# Set the number of topics
+k <- 4
+# Run LDA using MALLET
+lda_model_Gibbs <- LDA(dtm_matrix, k, method = "Gibbs")
+# Get the top words for each topic
+top_words_g <- terms(lda_model_Gibbs, 7)
+top_words_g %>%
+as_tibble() %>%
+mutate(across(everything(), ~ gsub("[\",\\\\]", "", .)))
+run_LDA <- function(dtm_matrix, k, L) {
+# Run LDA using Gibbs sampling method
+lda_model_Gibbs <- LDA(dtm_matrix, k, method = "Gibbs")
+# Get the top words for each topic
+top_words <- terms(lda_model_Gibbs, L)
+# Convert top_words to tibble and remove unnecessary characters
+top_words_tibble <- top_words %>%
+as_tibble() %>%
+mutate(
+across(everything(), ~ gsub("[\",\\\\]", "", .))
+)
+# Return the table with topics and their top words
+return(top_words_tibble)
+}
+run_LDA(dtm_matrix = dtm_matrix, K = 10, L = 10)
+run_LDA(dtm_matrix = dtm_matrix, k = 10, L = 10)
+run_LDA(dtm_matrix = dtm_matrix, k = 10, L = 10) %>%  write_rds(here::here("results", "m_10x10.rds"))
+m42 <- run_LDA(dtm_matrix = dtm_matrix, k = 4, L = 4)
+m42
+m42 <- run_LDA(dtm_matrix = dtm_matrix, k = 4, L = 5)
+m42
+m42 <- run_LDA(dtm_matrix = dtm_matrix, k = 4, L = 4)
+m42
+m42
+m42 <- run_LDA(dtm_matrix = dtm_matrix, k = 4, L = 4)
+m42
+set.seed(444)
+m42 <- run_LDA(dtm_matrix = dtm_matrix, k = 4, L = 4)
+m42
+m42 <- run_LDA(dtm_matrix = dtm_matrix, k = 4, L = 4)
+m42
+m42 <- run_LDA(dtm_matrix = dtm_matrix, k = 4, L = 4)
+m42
+set.seed(454)
+m42 <- run_LDA(dtm_matrix = dtm_matrix, k = 4, L = 4)
+m42
+m42 <- run_LDA(dtm_matrix = dtm_matrix, k = 4, L = 4)
+m42
+set.seed(450)
+m42 <- run_LDA(dtm_matrix = dtm_matrix, k = 4, L = 4)
+m42
+set.seed(312)
+m42 <- run_LDA(dtm_matrix = dtm_matrix, k = 4, L = 4)
+m42
+set.seed(312)
+m10 <- run_LDA(dtm_matrix = dtm_matrix, k = 10, L = 10)
+m05 <- run_LDA(dtm_matrix = dtm_matrix, k = 5, L = 4)
+m04 <- run_LDA(dtm_matrix = dtm_matrix, k = 4, L = 7)
+m42 <- run_LDA(dtm_matrix = dtm_matrix, k = 4, L = 4)
+m_10 %>% write_rds(here::here("results", "m_10x10.rds"))
+m10
+m05
+m04
+m42
+m10 %>% write_rds(here::here("results", "m_10x10.rds"))
+m05  %>% write_rds(here::here("results", "m_05x04.rds"))
+m04  %>% write_rds(here::here("results", "m_04x07.rds"))
+as.data.frame(m04@beta) %>% as_tibble()
+# Set the number of topics
+k <- 4
+# Run LDA using MALLET
+lda_model_Gibbs <- LDA(dtm_matrix, k, method = "Gibbs")
+# Get the top words for each topic
+top_words_g <- terms(lda_model_Gibbs, 7)
+top_words_g %>%
+as_tibble() %>%
+mutate(across(everything(), ~ gsub("[\",\\\\]", "", .)))
+set.seed(312)
+# Run LDA using MALLET
+lda_model_Gibbs <- LDA(dtm_matrix, k, method = "Gibbs")
+# Get the top words for each topic
+top_words_g <- terms(lda_model_Gibbs, 7)
+top_words_g %>%
+as_tibble() %>%
+mutate(across(everything(), ~ gsub("[\",\\\\]", "", .)))
+# Get the topic distribution for each document
+doc_topics <- as.data.frame(lda_model_Gibbs@beta) %>% as_tibble()
+doc_topics
+tidy(lda_model_Gibbs, matrix = "beta") %>%
+mutate(across(term, ~ gsub("[\",\\\\]", "", .))) %>%
+group_by(topic) %>%
+slice_max(beta, n = 5) %>%
+ungroup() %>%
+arrange(topic, -beta) %>%
+mutate(term = reorder_within(term, beta, topic)) %>%
+ggplot(aes(beta, term, fill = factor(topic))) +
+geom_col(show.legend = FALSE) +
+facet_wrap(~ topic, scales = "free")
+top_words_g %>%
+as_tibble() %>%
+mutate(across(everything(), ~ gsub("[\",\\\\]", "", .)))
+top_w <- top_words_g %>%
+as_tibble() %>%
+mutate(across(everything(), ~ gsub("[\",\\\\]", "", .)))
+pacman::p_load(tidyverse, mallet, tidytext, tm, treemapify, topicmodels)
+set.seed(312)
+data1 <- read_tsv(here::here("data", "savedrecs1000.txt")) %>%  select(TI, AB)
+data2 <- read_tsv(here::here("data", "savedrecs1057.txt")) %>%  select(TI, AB)
+main_data <- bind_rows(
+data1, data2
+) %>%
+filter(!is.na(AB)) %>%   #  REMOVE EMPTY ABSTRACTS FORM THE DATA %>%
+distinct(TI, .keep_all = T)
+# EXTRACTING ALL ABSTRACTS INTO ONE SINGLE CORPUS
+corpus_raw <- main_data %>%
+select(AB) %>%
+mutate(AB = as.character(AB)) %>%
+str_c(collapse = " ")
+# Step 1: Create a corpus
+corpus <- Corpus(VectorSource(corpus_raw))
+# Step 2: Text transformation
+# convert to lower case
+mydata <- tm_map(corpus, content_transformer(tolower))
+# remove anything other than English letters or space
+removeNumPunct <- function(x) gsub("[^[:alpha:][:space:]]", "", x)
+mydata <- tm_map(mydata, content_transformer(removeNumPunct))
+# remove stopwords
+mydata <- tm_map(mydata, removeWords, stopwords("english"))
+#u can create custom stop words using the code below.
+myStopwords <- c(setdiff(stopwords('english'), c("r", "big")),
+"eeg", "les", "c", "ie", "one", "e", "s", "co", "would", "will", "can",
+"however", "moreover", "use", "see", "used", "using", "via", "amp", "ss", "algal",
+"use", "two", "also", "based", "key", "find")
+mydata <- tm_map(mydata, removeWords, myStopwords)
+# remove extra whitespace
+mydata <- tm_map(mydata, stripWhitespace)
+# Remove numbers
+mydata <- tm_map(mydata, removeNumbers)
+# Remove punctuations
+mydata <- tm_map(mydata, removePunctuation)
+# inspect(mydata)
+# Step 3: Tokenization (optional)
+corpus_text <- sapply(mydata, as.character)
+tidy_data <- tibble(text = corpus_text)
+tidy_data <- tidy_data %>%
+unnest_tokens(word, text)
+# this was not a good idea
+# corpus2 <- tm_map(mydata, Boost_tokenizer)
+# inspect(corpus2)
+# Step 4: Stemming or Lemmatization (optional)
+# I FOUND THIS STEP TO CREATE SOME PROBLEMS WITH THE WORDS
+# corpus2 <- tm_map(corpus2, stemDocument)  # Stemming
+# Step 5: Create Document-Term Matrix (DTM)
+dtm <- DocumentTermMatrix(tidy_data)
+# inspect(dtm)
+# WORD FREQUENCY IN THE CORPUS
+words <- tidy_data %>%
+group_by(word) %>%
+summarise(count= n()) %>%
+arrange(desc(count))
+# VISUALISATION OF THE FREQUENCY
+# MAKE THIS LOOK BETTER
+wordsd <- words %>%
+top_n(100) %>%
+ggplot(aes(area = count, fill = word, label = word)) +
+guides(fill="none") +
+geom_treemap() +
+geom_treemap_text(colour = "white",
+place = "centre",
+size = 15) +
+scale_fill_viridis_d()
+write_rds(wordsd, here::here("results", "wordsd.rds"))
+# SAVE THIS AND USE IT LATER LOOKS GREAT
+wordc <- wordcloud2::wordcloud2(words)
+write_rds(wordc, here::here("results", "wordc.rds"))
+## LET'S GO AFTER THE TOPIC MODELLING NOW!
+# Convert DTM to matrix
+dtm_matrix <- as.matrix(dtm)
+###############################################################################
+## function to facilitate the configurations
+run_LDA <- function(dtm_matrix, k, L) {
+# Run LDA using Gibbs sampling method
+lda_model_Gibbs <- LDA(dtm_matrix, k, method = "Gibbs")
+# Get the top words for each topic
+top_words <- terms(lda_model_Gibbs, L)
+# Convert top_words to tibble and remove unnecessary characters
+top_words_tibble <- top_words %>%
+as_tibble() %>%
+mutate(
+across(everything(), ~ gsub("[\",\\\\]", "", .))
+) %>%
+gt::gt()
+# Return the table with topics and their top words
+return(top_words_tibble)
+}
+m10 <- run_LDA(dtm_matrix = dtm_matrix, k = 10, L = 10)
+m05 <- run_LDA(dtm_matrix = dtm_matrix, k = 5, L = 4)
+# m04 <- run_LDA(dtm_matrix = dtm_matrix, k = 4, L = 7)
+m10 %>% write_rds(here::here("results", "m_10x10.rds"))
+m05  %>% write_rds(here::here("results", "m_05x04.rds"))
+# m04  %>% write_rds(here::here("results", "m_04x07.rds"))
+# Set the number of topics
+k <- 4
+# Run LDA using MALLET
+lda_model_Gibbs <- LDA(dtm_matrix, k, method = "Gibbs")
+# Get the top words for each topic
+top_words_g <- terms(lda_model_Gibbs, 7)
+top_w <- top_words_g %>%
+as_tibble() %>%
+mutate(across(everything(), ~ gsub("[\",\\\\]", "", .)))
+write_rds(top_w, here::here("results", "top_w.rds"))
+# Get the topic distribution for each document
+doc_topics <- as.data.frame(lda_model_Gibbs@beta) %>% as_tibble()
+plot  <- tidy(lda_model_Gibbs, matrix = "beta") %>%
+mutate(across(term, ~ gsub("[\",\\\\]", "", .))) %>%
+group_by(topic) %>%
+slice_max(beta, n = 5) %>%
+ungroup() %>%
+arrange(topic, -beta) %>%
+mutate(term = reorder_within(term, beta, topic)) %>%
+ggplot(aes(beta, term, fill = factor(topic))) +
+geom_col(show.legend = FALSE) +
+facet_wrap(~ topic, scales = "free") %>%
+labs(
+text = "Posterior weights of each words in each topic"
+)
+write_rds(plot, here::here("results", "weights_plot.rds"))

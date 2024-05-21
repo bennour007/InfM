@@ -1,0 +1,22 @@
+Topic 1,Topic 2,Topic 3,Topic 4,Model
+gdp,individual,n,economic,alpha_2_iter_1000
+part,proposes,practices,relatedness,alpha_2_iter_1000
+entry,performed,focusing,complexity,alpha_2_iter_1000
+representation,year,distribution,study,alpha_2_iter_1000
+mechanism,revealed,probability,results,alpha_2_iter_1000
+density,contexts,way,countries,alpha_2_iter_1000
+cluster,patents,reveals,research,alpha_2_iter_1000
+question,economic,evolutionary,provide,alpha_0.5_iter_2000
+ma,relatedness,conditions,long,alpha_0.5_iter_2000
+practices,complexity,part,shown,alpha_0.5_iter_2000
+employee,study,creation,investigated,alpha_0.5_iter_2000
+alternative,results,finding,classification,alpha_0.5_iter_2000
+proposes,countries,policymakers,qualitative,alpha_0.5_iter_2000
+gap,research,frequency,primary,alpha_0.5_iter_2000
+estimate,common,economic,often,alpha_0.1_iter_2000
+selection,improving,relatedness,connection,alpha_0.1_iter_2000
+urbanization,job,complexity,motivational,alpha_0.1_iter_2000
+vector,relationships,study,creative,alpha_0.1_iter_2000
+articles,sport,results,algorithms,alpha_0.1_iter_2000
+organizational,properties,countries,longrun,alpha_0.1_iter_2000
+capture,collected,data,transition,alpha_0.1_iter_2000

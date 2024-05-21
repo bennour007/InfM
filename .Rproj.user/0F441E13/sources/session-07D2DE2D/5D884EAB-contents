@@ -1,0 +1,36 @@
+pacman::p_load(tidyverse, mallet)
+
+
+data <- read_tsv(here::here('data', 'savedrecs.txt'))
+abstracts <- data %>% 
+  filter(!is.na(DI)) %>% 
+  pull(AB)
+
+
+txt_files <- list.files(path = here::here('data'), pattern = "\\.pdf$", full.names = TRUE)
+
+
+convertpdf2txt <- function(dirpath){
+    x <- pdftools::pdf_text(dirpath) %>%
+      paste0(collapse = " ") %>%
+      stringr::str_squish()
+    return(x)
+}
+
+
+txts <- txt_files %>% 
+  map(convertpdf2txt)
+
+
+
+sotu.instances <- 
+  mallet.import(id.array = row.names(sotu), 
+                text.array = sotu[["text"]], 
+                stoplist = mallet_stoplist_file_path("en"),
+                token.regexp = "\\p{L}[\\p{L}\\p{P}]+\\p{L}")
+
+
+
+
+
+
